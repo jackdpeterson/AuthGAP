@@ -1,0 +1,14 @@
+[id^='auth_'] {
+	display: none;
+}
+[id^='no_auth_'] {
+	display: block;
+}
+
+div#login_error_message {
+	display: none;
+}
+
+div#login_error_message p {
+	color: #FF0000;
+}
