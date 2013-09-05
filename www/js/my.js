@@ -20,14 +20,14 @@ function init() {
  * index_action_logout
  */
 function index_action_logout(e) {
-	window.localStorage.removeItem("is_authenticated");
+	localStorage.removeItem("is_authenticated");
 	modify_views_based_on_authentication_status();
 	return false;
 }
 
 function getAuthenticationToken() {
-	var email = window.localStorage.getItem("authentication_email");
-	var password = window.localStorage.getItem("authentication_password");
+	var email = localStorage.getItem("authentication_email");
+	var password = localStorage.getItem("authentication_password");
 	return Base64.encode(Base64.encode(email) + ":" + password);
 }
 
@@ -48,13 +48,16 @@ function login_action_sign_in(e) {
 	});
 	request.done(function(msg) {
 		if (msg.status == 'authenticated') {
-			window.localStorage.setItem("authentication_email", $(
+			localStorage.setItem("authentication_email", $(
 					'#login_email_text_input').val());
-			window.localStorage.setItem("authentication_password", $(
+			localStorage.setItem("authentication_password", $(
 					'#login_password_text_input').val());
-			window.localStorage.setItem("is_authenticated", 1);
+			localStorage.setItem("is_authenticated", 1);
 			window.parent.location.href = "#page1";
 			modify_views_based_on_authentication_status();
+
+
+
 		} else {
 			$('#login_error_message').css("display", "block");
 			$('#login_error_message p').text(msg.status);
@@ -68,21 +71,22 @@ function login_action_sign_in(e) {
 }
 
 function modify_views_based_on_authentication_status() {
-	if (typeof window.localStorage.getItem("is_authenticated") == 'undefined'
-			|| window.localStorage.getItem("is_authenticated") == null) {
+	if (typeof localStorage.getItem("is_authenticated") == 'undefined'
+			|| localStorage.getItem("is_authenticated") == null) {
 		// Hide a[id^='auth'] items.
-		$("[id^='auth'").css("display", "none");
+		$("[id^='auth']").css("display", "none");
 		// Show a[id^='no_auth'] items.
-		$("[id^='no_auth'").css("display", "block");
+		$("[id^='no_auth']").css("display", "block");
 	}
 	// Logged in
 	else {
 		// Display a[id^='auth'] items.
-		$("[id^='auth'").css("display", "block");
+		$("[id^='auth']").css("display", "block");
 		// Hide a[id^='no_auth'] items.
-		$("[id^='no_auth'").css("display", "none");
-
+		$("[id^='no_auth']").css("display", "none");
 	}
+	// Place the text in the view thingy at the bottom
+	$("#localStorage_data").text(JSON.stringify(localStorage));
 }
 
 /**
